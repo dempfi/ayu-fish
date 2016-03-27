@@ -50,8 +50,8 @@ function fish_prompt
 
     set -l git_right_status (
       command git rev-list --left-right --count 'HEAD...@{upstream}' ^ /dev/null | awk '
-        $1 > 0 { printf "∧" }
-        $2 > 0 { printf "∨" }
+        $1 > 0 { printf "↑" }
+        $2 > 0 { printf "↓" }
     ')
 
     if git_is_stashed
