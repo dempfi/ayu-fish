@@ -19,6 +19,7 @@ function fish_prompt
 
   set -l branch_name
   set -l branch_color 336600 -b BFE600
+  set -l branch_separator BFE600 -b normal
 
   if set branch_name (git_branch_name)
 
@@ -46,10 +47,12 @@ function fish_prompt
 
     if git_is_touched
       set branch_color 593C00 -b FF9D00
+      set branch_separator FF9D00 -b normal
     end
 
     if git_is_detached_head
       set branch_color white -b D70000
+      set branch_separator D70000 -b normal
       set branch_name "→ $branch_name"
     end
 
@@ -59,11 +62,13 @@ function fish_prompt
         $2 > 0 { print "↓"$2 }
     ')
 
-    set git_right_status (
-      command git stash list 2>/dev/null | wc -l | awk '$1 > 0 { print "⟀"$1 }'
-    )" $git_right_status"
+    if git_is_stashed
+      set git_right_status (
+        command git stash list 2>/dev/null | wc -l | awk '$1 > 0 { print "⟀"$1 }'
+      )" $git_right_status"
+    end
 
-    set branch_name "$git_status"(set_color $branch_color)" $branch_name$git_remote_status "(
+    set branch_name "$git_status"(set_color $branch_separator)\uE0B2(set_color $branch_color)"$branch_name$git_remote_status"(set_color $branch_separator)\uE0B0(
       set_color normal)
 
     if test ! -z "$git_right_status"
