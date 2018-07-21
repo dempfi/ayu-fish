@@ -1,6 +1,6 @@
 function fish_prompt
   set -l status_copy $status
-  set -l status_color white
+  set -l status_color normal
 
   # set -l cwd (echo "$PWD" | sed -E "
   #   s|.+/(.+)/(.+)|\1/\2|
@@ -18,10 +18,9 @@ function fish_prompt
   # end
 
   set -l branch_name
-  set -l branch_color 336600 -b BFE600
-  set -l branch_separator BFE600 -b normal
+  set -l branch_color green
 
-  if set branch_name (git_branch_name)
+  if set branch_name "("(git_branch_name)")"
 
     set -l git_remote_status
 
@@ -46,14 +45,12 @@ function fish_prompt
     end
 
     if git_is_touched
-      set branch_color 593C00 -b FF9D00
-      set branch_separator FF9D00 -b normal
+      set branch_color yellow
     end
 
     if git_is_detached_head
-      set branch_color white -b D70000
-      set branch_separator D70000 -b normal
-      set branch_name "→ $branch_name"
+      set branch_color red
+      set branch_name "→$branch_name"
     end
 
     set -l git_right_status (
@@ -62,13 +59,14 @@ function fish_prompt
         $2 > 0 { print "↓"$2 }
     ')
 
+
     if git_is_stashed
       set git_right_status (
         command git stash list 2>/dev/null | wc -l | awk '$1 > 0 { print "⟀"$1 }'
       )" $git_right_status"
     end
 
-    set branch_name "$git_status"(set_color $branch_separator)\uE0B2(set_color $branch_color)"$branch_name$git_remote_status"(set_color $branch_separator)\uE0B0(
+    set branch_name "$git_status"(set_color -o $branch_color)"$branch_name$git_remote_status"(
       set_color normal)
 
     if test ! -z "$git_right_status"
@@ -77,17 +75,18 @@ function fish_prompt
   end
 
   if test "$status_copy" -ne 0
-    set status_color f00
+    set status_color F33
   end
 
-  printf (set_color white)(prompt_pwd)" "(set_color normal)
+  printf (set_color ABB0B6)(prompt_pwd)" "(set_color normal)
 
   if test ! -z "$branch_name"
+  
     printf "$branch_name "
   end
 
   if test ! -z "$cwd_base"
-    printf (set_color white)"$cwd_base "(set_color normal)
+    printf (set_color ABB0B6)"$cwd_base "(set_color normal)
   end
 
   printf (set_color $status_color)"→ "(set_color normal)
