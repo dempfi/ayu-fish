@@ -81,7 +81,6 @@ function fish_prompt
   printf (set_color ABB0B6)(prompt_pwd)" "(set_color normal)
 
   if test ! -z "$branch_name"
-  
     printf "$branch_name "
   end
 
@@ -89,5 +88,5 @@ function fish_prompt
     printf (set_color ABB0B6)"$cwd_base "(set_color normal)
   end
 
-  printf (set_color $status_color)"→ "(set_color normal)
+  printf (set_color $status_color)"-> "(set_color normal)
 end
